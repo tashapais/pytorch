@@ -2027,6 +2027,9 @@ class SkipFunctionVariable(VariableTracker):
                 ],
                 skip_frame=True,
             )
+        elif self.value is torch._dynamo.bytecode_debugger.breakpoint:
+            tx.output._emit_debugger_breakpoint = True
+            return ConstantVariable.create(None)
         elif self.value is torch._dynamo.step_unsupported:
             try:
                 unimplemented(
